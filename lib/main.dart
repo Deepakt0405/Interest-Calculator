@@ -32,11 +32,17 @@ class Form extends StatefulWidget {
 class _MyWidgetState extends State<Form> {
   TextEditingController principalTextEditingController =
       TextEditingController();
-  TextEditingController rateofInterestTextEditingController =
+  TextEditingController rateOfInterestTextEditingController =
       TextEditingController();
   TextEditingController termTextEditingController = TextEditingController();
 
+  //currencies
+  var _currencies = ['Rupees', 'Dollars', 'Pounds'];
+
   String result = "";
+  String _character = "";
+  String currentValue = "";
+  String nv = "";
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +51,50 @@ class _MyWidgetState extends State<Form> {
         title: Text("Interest Calculator"),
         centerTitle: true,
       ),
+      body: Container(
+        margin: EdgeInsets.all(10),
+        child: ListView(
+          children: <Widget>[
+            //Image
+            getImage(),
+
+            Row(
+              children: <Widget>[
+                Expanded(child: Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: ListTile(
+                    title: Text("Simple Interest"),
+                    leading: Radio(
+                      value: "Simple",
+                      groupValue: _character,
+                      onChanged: (String value)
+                      {
+                        setState(() {
+                          _character = value;
+                        });
+
+                      },
+                    ),
+                  ),
+                ))
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
+}
+
+Widget getImage(){
+    AssetImage assetImage = AssetImage('assets/back.png');
+    Image image = Image(
+      image: assetImage,
+      width: 150,
+      height: 150,
+    );
+    return Container(
+      child: image,
+      margin: EdgeInsets.all(40),
+    );
 }
