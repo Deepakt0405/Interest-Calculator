@@ -67,18 +67,71 @@ class _MyWidgetState extends State<Form> {
                     leading: Radio(
                       value: "Simple",
                       groupValue: _character,
-                      onChanged: (String value)
+                      onChanged: (value)
                       {
                         setState(() {
-                          _character = value;
+                          // Here it is simple
+                          _character = value!;
                         });
 
                       },
                     ),
                   ),
-                ))
+                )),
+                Expanded(child: Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: ListTile(
+                    title: Text("Compound Interest"),
+                    leading: Radio(
+                      value: "Compound",
+                      groupValue: _character,
+                      onChanged: (value)
+                      {
+                        setState(() {
+                          // Here it is simple
+                          _character = value!;
+                        });
+
+                      },
+                    ),
+                  ),
+                )),
+                Container(
+                  width: 5.0,
+                ),
               ],
-            )
+            ),
+            Padding(padding: EdgeInsets.all(5),
+              child: TextField(
+                style: TextStyle(color: Colors.black),
+                keyboardType: TextInputType.number,
+                controller: principalTextEditingController,
+                decoration: InputDecoration(
+                  labelText: "Principal",
+                  hintText: "Enter a principal amount e.g. 1099",
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0),
+                  )
+                ),
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(5),
+              child: TextField(
+                style: TextStyle(color: Colors.black),
+                keyboardType: TextInputType.number,
+                controller: principalTextEditingController,
+                decoration: InputDecoration(
+                  style: TextStyle(color: Colors.black),
+                    labelText: "Rate Of Interest",
+                    hintText: "Enter a rate per year",
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0),
+                    )
+                ),
+              ),
+            ),
+            Row(children: <Widget>[
+              Expanded(child: Padding(padding:EdgeInsets.all(5),
+              ))
+            ],)
           ],
         ),
       ),
