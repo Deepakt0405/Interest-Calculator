@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -75,7 +77,6 @@ class _FormWidgetState extends State<FormWidget> {
                         groupValue: _character,
                         onChanged: (value) {
                           setState(() {
-                            // Here it is simple
                             _character = value!;
                           });
                         },
@@ -93,7 +94,6 @@ class _FormWidgetState extends State<FormWidget> {
                         groupValue: _character,
                         onChanged: (value) {
                           setState(() {
-                            // Here it is simple
                             _character = value!;
                           });
                         },
@@ -187,6 +187,44 @@ class _FormWidgetState extends State<FormWidget> {
                   ),
                 )
               ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.tealAccent, // background color
+                      onPrimary: Colors.black, // text color
+                    ),
+                    onPressed: () {
+                      this.result = _getEffectiveAmount(this.nv);
+                      onDialogOpen(context, this.result);
+                    },
+                    child: Text(
+                      "Calculate",
+                      textScaleFactor: 1.75,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.tealAccent, // background color
+                      onPrimary: Colors.black, // text color
+                    ),
+                    onPressed: () {
+                      _reset();
+                    },
+                    child: Text(
+                      "Reset",
+                      textScaleFactor: 1.75,
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
         ),
@@ -198,6 +236,53 @@ class _FormWidgetState extends State<FormWidget> {
     setState(() {
       this.currentValue = newValue;
     });
+  }
+
+  String _getEffectiveAmount(String newValue) {
+    String newResult;
+    double principal =
+        double.tryParse(principalTextEditingController.text) ?? 0;
+    double rate =
+        double.tryParse(rateOfInterestTextEditingController.text) ?? 0;
+    double term = double.tryParse(termTextEditingController.text) ?? 0;
+
+    double netPayableAmount = 0;
+    if (_character == "Simple") {
+      netPayableAmount = principal + (principal * rate * term) / 100;
+    } else if (_character == "Compound") {
+      netPayableAmount = principal * pow((1 + (rate / 100)), term);
+    }
+    if (term == 1) {
+      newResult =
+          "After $term year, you will have to pay amount = $netPayableAmount $currentValue";
+    } else {
+      newResult =
+          "After $term years, you will have to pay amount = $netPayableAmount $currentValue";
+    }
+    return newResult;
+  }
+
+  void _reset() {
+    principalTextEditingController.text = "";
+    rateOfInterestTextEditingController.text = "";
+    termTextEditingController.text = "";
+    result = "";
+    currentValue = _currencies[0];
+  }
+
+  // Dialog box
+  void onDialogOpen(BuildContext context, String s) {
+    var alertDialog = AlertDialog(
+      title: Text("Result"),
+      content: Text(s),
+      backgroundColor: Colors.green,
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog;
+      },
+    );
   }
 }
 
